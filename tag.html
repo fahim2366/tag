@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NiramoyPoth Delivery Tag Maker</title>
+  <link href="https://fonts.cdnfonts.com/css/made-mirage" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/made-mirage');
+    @import url('https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@100..800&display=swap');
+    
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      line-height: 1.2;
+      font-family: 'MADE Mirage', Arial, sans-serif;
+      background-image: url('back.jpg');
+      color: #333;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 930px;
+      margin: 20px auto;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .container:hover {
+      transform: translateY(-10px); /* Moves the container up slightly */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* Increases shadow for floating effect */
+    } 
+    
+    h1 {
+      margin-bottom: 15px;
+    }
+    
+    form {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #020202;
+      border-radius: 20px;
+      font-size: 1rem;
+    }
+    
+    textarea {
+      resize: none;
+    }
+    
+    button {
+      background: #007BFF;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-right: 5px;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5); /* Long text shadow */
+      transition: background 0.3s ease; /* Smooth transition for hover effect */
+    }
+    
+    button:hover {
+      text-shadow: 4px 4px 10px rgba(0, 0, 0, 0.7); /* Enhanced shadow on hover */
+      background: linear-gradient(90deg, #0056b3, #007BFF); /* Gradient effect */
+    }
+    
+    .tags-container {
+      margin-top: 0px;
+    }
+    
+    /* Grid adjusted to always have 12 tags (3 columns x 4 rows) */
+    .tag-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 300px);
+      gap: 10px;
+      justify-items: start;
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    
+    /* Force page-break for grids after the first */
+    .tag-grid:not(:first-child) {
+      page-break-before: always;
+    }
+    
+    .delivery-tag {
+      width: 300px;
+      height: 200px;
+      font-weight: bold;
+      border: 2px dashed #aaa;
+      padding: 10px;
+      border-radius: 6px;
+      background: #fafafa;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: auto;
+      position: relative;
+      page-break-inside: avoid;
+    }
+    
+    /* Increase title size */
+    .tag-title {
+      font-family: 'MADE Mirage','Anek Bangla', Arial, sans-serif; /* Apply the Anek Bangla font */
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .order-id {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+    
+    /* Make Name, Address, Phone larger and bold for clarity */
+    .delivery-tag p {
+      margin: 3px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      font-family: 'Anek Bangla', 'MADE Mirage', Arial, sans-serif; /* fallback for Bangla */
+    }
+    
+    /* Logo styling */
+    .logo {
+      width: 18px;
+      vertical-align: middle;
+      margin-right: 5px;
+    }
+    
+    /* Edit button (not printed) */
+    .edit-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: #ff9800;
+      color: #fff;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm;
+      }
+      body * {
+        visibility: hidden;
+      }
+      .tags-container, .tags-container * {
+        visibility: visible;
+      }
+      .tags-container {
+        margin-top: 0;
+      }
+      .tag-grid {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+      }
+      .edit-btn {
+        display: none !important;
+      }
+      .container {
+        padding: 0;
+        box-shadow: none;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><img src="niramoypoth.jpg" width="80"> Delivery Tag Generator</h1>
+    
+    <!-- Form Section -->
+    <form id="deliveryForm">
+      <div class="form-group">
+        <label for="orderId">Order ID</label>
+        <input type="text" id="orderId" placeholder="#001" />
+      </div>
+      <div class="form-group">
+        <label for="recipientName">Recipient Name</label>
+        <input type="text" id="recipientName" placeholder="e.g. Monirul Islam" required />
+      </div>
+      <div class="form-group">
+        <label for="fullAddress">Address</label>
+        <textarea id="fullAddress" rows="3" placeholder="Enter full address..."></textarea>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input type="text" id="phoneNumber" value="+88" placeholder="+8801711331311" required />
+      </div>
+      <button type="button" id="addTagBtn">Add Tag</button>
+    </form>
+    
+    <!-- Tags Container -->
+    <div class="tags-container" id="tagsContainer"></div>
+    
+    <button type="button" id="printBtn">Print | Save</button>
+    <!-- Note: Setting a default save location to "K:\_NiramoyPoth Tags" is not possible in browser JavaScript due to security restrictions. -->
+  </div>
+  
+  <script>
+    document.getElementById("addTagBtn").addEventListener("click", function () {
+      const orderId = document.getElementById("orderId").value.trim() || "000";
+      const name = document.getElementById("recipientName").value.trim();
+      const address = document.getElementById("fullAddress").value.trim();
+      const phone = document.getElementById("phoneNumber").value.trim();
+
+      if (name && address && phone) {
+        addTag(orderId, name, address, phone);
+        // Clear fields after adding tag
+        document.getElementById("orderId").value = "";
+        document.getElementById("recipientName").value = "";
+        document.getElementById("fullAddress").value = "";
+        document.getElementById("phoneNumber").value = "+88";
+      } else {
+        alert("সব ঘর পূরণ করুন!"); // Please fill all the fields!
+      }
+    });
+    
+    function addTag(orderId, name, address, phone) {
+      const container = document.getElementById("tagsContainer");
+      let currentGrid = container.lastElementChild;
+      
+      // Create a new grid if there isn't one or if the current grid already has 12 tags
+      if (!currentGrid || currentGrid.children.length >= 12) {
+        currentGrid = document.createElement("div");
+        currentGrid.className = "tag-grid";
+        container.appendChild(currentGrid);
+      }
+      
+      const tagDiv = document.createElement("div");
+      tagDiv.classList.add("delivery-tag");
+      
+      tagDiv.innerHTML = `
+        <button class="edit-btn" onclick="editTag(this)">Edit</button>
+        <div class="tag-header">
+          <div class="tag-title"> <img src="niramoypoth.ico" alt="NiramoyPoth Icon" style="width: 30px; vertical-align: middle; margin-right: 5px;" />লিভার ডিটক্স চা</div>
+          ${orderId !== "000" ? `<div class="order-id">#${orderId}</div>` : ""}
+        </div>
+        <p>${name}</p>
+        <p><img class="logo" src="https://img.icons8.com/ios-filled/50/000000/marker.png" alt="Address Logo"/>${address.replace(/\n/g, "<br>")}</p>
+        <p><img class="logo" src="https://img.icons8.com/ios-filled/50/000000/phone.png" alt="Phone Logo"/>${phone}</p>
+      `;
+      
+      currentGrid.appendChild(tagDiv);
+
+      // Adjust font size for address if needed
+      const addressParagraph = tagDiv.querySelectorAll("p")[1];
+      if (address.length > 50) {
+        addressParagraph.style.fontSize = "1rem";
+      }
+    }
+    
+    function editTag(button) {
+      const tag = button.parentElement;
+      const orderIdElem = tag.querySelector(".order-id");
+      const nameElem = tag.querySelectorAll("p")[0];
+      const addressElem = tag.querySelectorAll("p")[1];
+      const phoneElem = tag.querySelectorAll("p")[2];
+      
+      document.getElementById("orderId").value = orderIdElem ? orderIdElem.textContent.replace("#", "") : "";
+      document.getElementById("recipientName").value = nameElem ? nameElem.textContent : "";
+      
+      let addressText = addressElem ? addressElem.innerHTML.replace(/<img[^>]*>/, '').trim() : "";
+      document.getElementById("fullAddress").value = addressText.replace(/<br>/g, "\n");
+      
+      let phoneText = phoneElem ? phoneElem.innerHTML.replace(/<img[^>]*>/, '').trim() : "";
+      document.getElementById("phoneNumber").value = phoneText;
+      
+      tag.remove();
+    }
+    
+    document.getElementById("printBtn").addEventListener("click", function () {
+      const today = new Date();
+      const dateString = today.toISOString().split('T')[0];
+      document.title = dateString;
+      window.print();
+    });
+  </script>
+</body>
+</html>
